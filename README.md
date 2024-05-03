@@ -5,6 +5,7 @@
 
 - up202002749 -> Tomás Gonçalves Ribeiro Ferreira
 - up202109258 -> Sheila Maria Lourenço Albino
+- upXXXXX -> Daniel Bohrer Lopes
 
 
 ## Accomplished tasks
