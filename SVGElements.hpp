@@ -10,13 +10,12 @@ namespace svg
 {
     class SVGElement
     {
-
     public:
-        SVGElement();
+        SVGElement(){}
         virtual ~SVGElement();
         virtual void draw(PNGImage &img) const = 0;
     };
-
+   
     // Declaration of namespace functions
     // readSVG -> implement it in readSVG.cpp
     // convert -> already given (DO NOT CHANGE) in convert.cpp
@@ -37,6 +36,30 @@ namespace svg
         Color fill;
         Point center;
         Point radius;
+    };
+
+    class Rectangle : public SVGElement 
+    {
+    public:
+        Rectangle(const Color &fill, const Point &start, const Point &end);
+        void draw(PNGImage &img) const override;
+
+    private:
+        Color fill;
+        Point start;
+        Point end;
+    };
+
+    class Circle : public SVGElement 
+    {
+    public:
+        Circle(const Color &fill, const Point &center, int radius);
+        void draw(PNGImage &img) const override;
+
+    private:
+        Color fill;
+        Point center;
+        int radius;
     };
 }
 #endif
