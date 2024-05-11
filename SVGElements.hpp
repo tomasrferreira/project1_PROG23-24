@@ -38,18 +38,6 @@ namespace svg
         Point radius;
     };
 
-    class Rectangle : public SVGElement 
-    {
-    public:
-        Rectangle(const Color &fill, const Point &start, const Point &end);
-        void draw(PNGImage &img) const override;
-
-    private:
-        Color fill;
-        Point start;
-        Point end;
-    };
-
     class Circle : public SVGElement
     {
     public:
@@ -62,14 +50,50 @@ namespace svg
         int radius;
     };
 
+    class Polyline : public SVGElement
+    {
+    public:
+        Polyline(const Color &stroke_color, const std::vector<Point>& polyline_points);
+        void draw(PNGImage &img) const override;
+
+    private:
+        Color stroke;
+        std::vector<Point> points;
+    };
+
+    class Line : public SVGElement
+    {
+    public:
+        Line(const Color &stroke_color, Point start_point, Point end_point);
+        void draw(PNGImage &img) const override;
+
+    private:
+        Color stroke;
+        Point start;
+        Point end;
+    };
+
     class Polygon : public SVGElement
     {
     public:
         Polygon(const Color& fill, const std::vector<Point>& points);
         void draw(PNGImage& img) const override;
+
     private:
         Color fill;
         std::vector<Point> points;
+    };
+
+    class Rectangle : public SVGElement 
+    {
+    public:
+        Rectangle(const Color &fill, const Point &start, const Point &end);
+        void draw(PNGImage &img) const override;
+
+    private:
+        Color fill;
+        Point start;
+        Point end;
     };
 }
 #endif
