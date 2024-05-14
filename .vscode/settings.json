@@ -4,6 +4,7 @@
         "*.embeddedhtml": "html",
         "string": "cpp",
         "__bit_reference": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "new": "cpp"
     }
 }

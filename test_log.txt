@@ -1,15 +1,84 @@
->>>> [1] rotate_circle <<<<
-Reached here 
-Reached here 
-Reached here 
-Reached here 
-pixel (21 212): expected 255 0 0 got 255 255 255
->>>> [2] rotate_circle_with_origin <<<<
-Reached here 
-Reached here 
-Reached here 
-Reached here 
-Reached here 
-Reached here 
-Reached here 
-pixel (100 300): expected 0 0 255 got 240 240 240
+>>>> [1] batman <<<<
+>>>> [2] batman_2 <<<<
+>>>> [3] blank_1 <<<<
+>>>> [4] blank_2 <<<<
+>>>> [5] circle_1 <<<<
+>>>> [6] circle_2 <<<<
+>>>> [7] ellipse_1 <<<<
+>>>> [8] ellipse_2 <<<<
+>>>> [9] group_1 <<<<
+>>>> [10] group_2 <<<<
+>>>> [11] group_3 <<<<
+>>>> [12] group_4 <<<<
+>>>> [13] group_5 <<<<
+>>>> [14] group_6 <<<<
+pixel (10 210): expected 255 255 255 got 0 0 255
+>>>> [15] group_7 <<<<
+pixel (36 80): expected 255 0 0 got 255 255 255
+>>>> [16] line_1 <<<<
+>>>> [17] line_2 <<<<
+>>>> [18] lion <<<<
+>>>> [19] polygon_1 <<<<
+>>>> [20] polygon_2 <<<<
+>>>> [21] polyline_1 <<<<
+>>>> [22] polyline_2 <<<<
+>>>> [23] polyline_3 <<<<
+>>>> [24] rect_1 <<<<
+>>>> [25] rect_2 <<<<
+>>>> [26] rect_3 <<<<
+>>>> [27] rotate_circle <<<<
+>>>> [28] rotate_circle_with_origin <<<<
+>>>> [29] rotate_line <<<<
+>>>> [30] rotate_line_with_origin <<<<
+>>>> [31] rotate_polygon <<<<
+>>>> [32] rotate_polygon_with_origin <<<<
+>>>> [33] rotate_polyline <<<<
+>>>> [34] rotate_polyline_with_origin <<<<
+>>>> [35] rotate_rect <<<<
+pixel (6 252): expected 0 0 255 got 255 255 255
+>>>> [36] rotate_rect_with_origin <<<<
+Assertion failed: (x >= 0 && x < width_), function at, file PNGImage.cpp, line 62.
+>>>> [37] scale_circle <<<<
+pixel (20 60): expected 255 0 0 got 255 255 255
+>>>> [38] scale_circle_with_origin <<<<
+pixel (100 300): expected 0 0 255 got 255 255 255
+>>>> [39] scale_ellipse <<<<
+>>>> [40] scale_ellipse_with_origin <<<<
+300 300
+300 300
+300 300
+300 300
+300 300
+Assertion failed: (x >= 0 && x < width_), function at, file PNGImage.cpp, line 62.
+>>>> [41] scale_line <<<<
+>>>> [42] scale_line_with_origin <<<<
+>>>> [43] scale_polygon <<<<
+>>>> [44] scale_polygon_with_origin <<<<
+>>>> [45] scale_polyline <<<<
+>>>> [46] scale_polyline_with_origin <<<<
+>>>> [47] scale_rect <<<<
+pixel (0 20): expected 255 0 0 got 255 255 255
+>>>> [48] scale_rect_with_origin <<<<
+Assertion failed: (x >= 0 && x < width_), function at, file PNGImage.cpp, line 62.
+>>>> [49] transform_several <<<<
+>>>> [50] translate_circle <<<<
+pixel (0 25): expected 0 255 0 got 255 255 0
+>>>> [51] translate_ellipse <<<<
+pixel (5 25): expected 0 255 0 got 0 0 255
+>>>> [52] translate_line <<<<
+pixel (1 1): expected 255 255 255 got 0 255 0
+>>>> [53] translate_polygon <<<<
+>>>> [54] translate_polyline <<<<
+>>>> [55] translate_rect <<<<
+>>>> [56] use_1 <<<<
+pixel (11 5): expected 255 0 0 got 255 255 255
+>>>> [57] use_2 <<<<
+pixel (15 40): expected 255 0 0 got 0 0 255
+>>>> [58] use_3 <<<<
+pixel (0 750): expected 255 0 0 got 255 255 255
+>>>> [59] use_4 <<<<
+pixel (0 500): expected 255 0 0 got 255 255 255
+>>>> [60] use_5 <<<<
+pixel (1 1): expected 255 255 255 got 0 255 0
+>>>> [61] use_6 <<<<
+pixel (0 20): expected 0 0 0 got 255 255 255

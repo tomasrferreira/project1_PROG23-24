@@ -5,6 +5,7 @@
 #include "Color.hpp"
 #include "Point.hpp"
 #include "PNGImage.hpp"
+using namespace std;
 
 namespace svg
 {
@@ -53,12 +54,12 @@ namespace svg
     class Polyline : public SVGElement
     {
     public:
-        Polyline(const Color &stroke_color, const std::vector<Point>& polyline_points);
+        Polyline(const Color &stroke_color, const vector<Point>& polyline_points);
         void draw(PNGImage &img) const override;
 
     private:
         Color stroke;
-        std::vector<Point> points;
+        vector<Point> points;
     };
 
     class Line : public SVGElement
@@ -76,12 +77,12 @@ namespace svg
     class Polygon : public SVGElement
     {
     public:
-        Polygon(const Color& fill, const std::vector<Point>& points);
+        Polygon(const Color& fill, const vector<Point>& points);
         void draw(PNGImage& img) const override;
 
     private:
         Color fill;
-        std::vector<Point> points;
+        vector<Point> points;
     };
 
     class Rectangle : public SVGElement 
