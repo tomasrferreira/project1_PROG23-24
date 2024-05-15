@@ -21,13 +21,13 @@ namespace svg {
     };
 
 
-    Color parse_color(const std::string& str) {
+    Color parse_color(const string& str) {
         Color c;
         if(str.at(0) == '#')
         {
             unsigned int v;
-            std::istringstream ss(str.substr(1));
-            ss >> std::hex >> v;
+            istringstream ss(str.substr(1));
+            ss >> hex >> v;
             c.red = (v >> 16) & 0xFF;   
             c.green = (v >> 8) & 0xFF; 
             c.blue = v & 0xFF;          
@@ -303,12 +303,21 @@ namespace svg {
 
         while(child) {
             const char* element_name = child->Name();
+            const char *transform_attr = child->Attribute("transform");
+            const char *transform_origin_attr = child->Attribute("transform-origin");
 
+            Point origin = {0, 0};
             int translate_x = 0;
             int translate_y = 0;
+            int origin_x;
+            int origin_y;
             int scale = 1;
             int degree = 0;
-            const char *transform_attr = child->Attribute("transform");
+
+             if(transform_origin_attr) {
+                sscanf(transform_origin_attr, "%d %d", &origin_x, &origin_y);
+                origin = {origin_x, origin_y};
+            }
 
             if(transform_attr) {
                 if(strstr(transform_attr, "translate")) {
@@ -345,7 +354,23 @@ namespace svg {
                 int origin_x;
                 int origin_y;
 
+                if(transform_origin_str) {
+                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
+                    origin = {origin_x, origin_y};
+                }
+
                 if(transform_str) {
+                    if(strstr(transform_str, "translate")) {
+                        if(strstr(transform_str, ",")) {
+                            sscanf(transform_str, "translate(%d,%d)", &translate_x, &translate_y);
+                            center.x += translate_x;
+                            center.y += translate_y;
+                        } else {
+                            sscanf(transform_str, "translate(%d %d)", &translate_x, &translate_y);
+                            center.x += translate_x;
+                            center.y += translate_y;
+                        }
+                    } 
                     if(strstr(transform_str, "rotate")) {
                         sscanf(transform_str, "rotate(%d)", &degree);
                     }
@@ -354,19 +379,13 @@ namespace svg {
                     }
                 }
 
-                if(transform_origin_str) {
-                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
-                    origin = {origin_x, origin_y};
-                    cout << origin_x << ' ' << origin_y << endl;
-                }
-
                 if(degree != 0) {
                     center = center.rotate(origin, degree);
-                    radius = radius.rotate(origin, degree);
+                    radius = radius.rotate({0, 0}, degree);
                 }
                 if(scale > 1) {
                     center = center.scale(origin, scale);
-                    radius = radius.scale(origin, scale);
+                    radius = radius.scale({0, 0}, scale);
                 }
                 svg_elements.push_back(new Ellipse(fill, center, radius));
             }
@@ -386,8 +405,24 @@ namespace svg {
                 Point center = {cx, cy};    
                 int origin_x;
                 int origin_y;
+            
+                if(transform_origin_str) {
+                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
+                    origin = {origin_x, origin_y};
+                }
 
                 if(transform_str) {
+                    if(strstr(transform_str, "translate")) {
+                        if(strstr(transform_str, ",")) {
+                            sscanf(transform_str, "translate(%d,%d)", &translate_x, &translate_y);
+                            center.x += translate_x;
+                            center.y += translate_y;
+                        } else {
+                            sscanf(transform_str, "translate(%d %d)", &translate_x, &translate_y);
+                            center.x += translate_x;
+                            center.y += translate_y;
+                        }
+                    } 
                     if(strstr(transform_str, "rotate")) {
                         sscanf(transform_str, "rotate(%d)", &degree);
                     }
@@ -396,16 +431,12 @@ namespace svg {
                     }
                 }
 
-                if(transform_origin_str) {
-                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
-                    origin = {origin_x, origin_y};
-                }
-
                 if(degree != 0) {
                     center = center.rotate(origin, degree);
                 }
                 if(scale > 1) {
                     center = center.scale(origin, scale);
+                    r = r * scale;
                 }
                 svg_elements.push_back(new Circle(fill, center, r));
             }
@@ -425,6 +456,11 @@ namespace svg {
                 int origin_y = 0;
                 Point origin = {0, 0};
 
+                if(transform_origin_str) {
+                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
+                    origin = {origin_x, origin_y};
+                }
+
                 if(transform_str) {
                     if(strstr(transform_str, "translate")) {
                         if(strstr(transform_str, ",")) {
@@ -439,11 +475,6 @@ namespace svg {
                     if(strstr(transform_str, "scale")) {
                         sscanf(transform_str, "scale(%d)", &scale);
                     }
-                }
-
-                if(transform_origin_str) {
-                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
-                    origin = {origin_x, origin_y};
                 }
 
                 for(Point &point : points) {
@@ -465,9 +496,6 @@ namespace svg {
                 int x2 = child->IntAttribute("x2");
                 int y2 = child->IntAttribute("y2");
 
-                Point p1 = {x1, y1};
-                Point p2 = {x2, y2};
-
                 Color stroke_color = parse_color(child->Attribute("stroke"));
 
                 const char* transform_str = child->Attribute("transform");
@@ -476,20 +504,38 @@ namespace svg {
                 int degree = 0;
                 int scale = 1;
                 Point origin = {0, 0};
+                Point p1 = {x1, y1};
+                Point p2 = {x2, y2};
                 int origin_x;
                 int origin_y;
 
+                if(transform_origin_str) {
+                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
+                    origin = {origin_x, origin_y};
+                }
+
                 if(transform_str) {
+                    if(strstr(transform_str, "translate")) {
+                        if(strstr(transform_str, ",")) {
+                            sscanf(transform_str, "translate(%d,%d)", &translate_x, &translate_y);
+                            p1.x += translate_x;
+                            p1.y += translate_y;
+                            p2.x += translate_x;
+                            p2.y += translate_y;
+                        } else {
+                            sscanf(transform_str, "translate(%d %d)", &translate_x, &translate_y);
+                            p1.x += translate_x;
+                            p1.y += translate_y;
+                            p2.x += translate_x;
+                            p2.y += translate_y;
+                        }
+                    } 
                     if(strstr(transform_str, "rotate")) {
                         sscanf(transform_str, "rotate(%d)", &degree);
                     }
                     if(strstr(transform_str, "scale")) {
                         sscanf(transform_str, "scale(%d)", &scale);
                     }
-                }
-                if(transform_origin_str) {
-                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
-                    origin = {origin_x, origin_y};
                 }
 
                 if(degree != 0) {
@@ -508,16 +554,21 @@ namespace svg {
                 const char* transform_str = child->Attribute("transform");
                 const char* transform_origin_str = child->Attribute("transform-origin");
 
+                Color fill = parse_color(child->Attribute("fill"));
+
                 vector<Point> points;
                 parsePoints(points_str, points);
-
-                Color fill = parse_color(child->Attribute("fill"));
 
                 int degree = 0;
                 int scale = 1;
                 int origin_x = 0;
                 int origin_y = 0;
                 Point origin = {0, 0};
+
+                if(transform_origin_str) {
+                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
+                    origin = {origin_x, origin_y};
+                }
 
                 if(transform_str) {
                     if(strstr(transform_str, "translate")) {
@@ -533,11 +584,6 @@ namespace svg {
                     if(strstr(transform_str, "scale")) {
                         sscanf(transform_str, "scale(%d)", &scale);
                     }
-                }
-
-                if(transform_origin_str) {
-                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
-                    origin = {origin_x, origin_y};
                 }
 
                 for(Point &point : points) {
@@ -560,17 +606,47 @@ namespace svg {
 
                 Color fill = parse_color(child->Attribute("fill"));
 
+                int degree = 0;
+                int scale = 1;
                 Point origin = {0, 0};
                 Point rect_origin = {x, y};
 
-                rect_origin = rect_origin.translate({translate_x, translate_y});
-                rect_origin = rect_origin.rotate(origin, degree);
-                rect_origin = rect_origin.scale(origin, scale);
+                const char* transform_str = child->Attribute("transform");
+                const char* transform_origin_str = child->Attribute("transform-origin");
 
-                x = rect_origin.x;
-                y = rect_origin.y;
+                if(transform_origin_str) {
+                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
+                    origin = {origin_x, origin_y};
+                }
 
-                svg_elements.push_back(new Rectangle(fill, Point({x, y}), Point({x + width - 1, y + height - 1})));
+                if(transform_str) {
+                    if(strstr(transform_str, "translate")) {
+                        if(strstr(transform_str, ",")) {
+                            sscanf(transform_str, "translate(%d,%d)", &translate_x, &translate_y);
+                            rect_origin.x += translate_x;
+                            rect_origin.y += translate_y;
+                        } else {
+                            sscanf(transform_str, "translate(%d %d)", &translate_x, &translate_y);
+                            rect_origin.x += translate_x;
+                            rect_origin.y += translate_y;
+                        }
+                    } 
+                    if(strstr(transform_str, "rotate")) {
+                        cout << transform_str << endl;
+                        sscanf(transform_str, "rotate(%d)", &degree);
+                    }
+                    if(strstr(transform_str, "scale")) {
+                        sscanf(transform_str, "scale(%d)", &scale);
+                    }
+                }
+
+                if(degree != 0) {
+                    rect_origin = rect_origin.rotate(origin, degree);
+                }
+                if(scale > 1) {
+                    rect_origin = rect_origin.scale(origin, scale);
+                }
+                svg_elements.push_back(new Rectangle(fill, Point({rect_origin.x, rect_origin.y}), Point({rect_origin.x + width - 1, rect_origin.y + height - 1})));
             }
             else if(strcmp(element_name, "g") == 0) {
                 processGroupElement(child->FirstChildElement(), svg_elements, translate_x, translate_y);
