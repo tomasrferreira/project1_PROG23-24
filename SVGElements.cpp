@@ -49,7 +49,7 @@ namespace svg
         img.draw_line(start, end, stroke);
     }
 
-    Polygon::Polygon(const Color &fill, const std::vector<Point>& points)
+    Polygon::Polygon(const Color &fill, const vector<Point>& points)
         : fill(fill), points(points) 
     {
     }
@@ -58,13 +58,8 @@ namespace svg
         img.draw_polygon(points, fill);
     }
 
-    Rectangle::Rectangle(const Color &fill, const Point &start, const Point &end)
-        : fill(fill), start(start), end(end)
+    Rectangle::Rectangle(const Color &fill, const Point &origin, int width, int height)
+        : Polygon(fill, {origin, origin.translate({width - 1, 0}), origin.translate({width - 1, height - 1}), origin.translate({0, height - 1})})
     {
-    }
-    void Rectangle::draw(PNGImage &img) const
-    {
-        std::vector<Point> points = {start, {end.x, start.y}, end, {start.x, end.y}, start};
-        img.draw_polygon(points, fill);
     }
 }

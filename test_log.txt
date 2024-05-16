@@ -14,7 +14,7 @@
 >>>> [14] group_6 <<<<
 pixel (10 210): expected 255 255 255 got 0 0 255
 >>>> [15] group_7 <<<<
-pixel (36 80): expected 255 0 0 got 255 255 255
+pixel (0 26): expected 255 255 255 got 0 255 0
 >>>> [16] line_1 <<<<
 >>>> [17] line_2 <<<<
 >>>> [18] lion <<<<
@@ -35,14 +35,7 @@ pixel (36 80): expected 255 0 0 got 255 255 255
 >>>> [33] rotate_polyline <<<<
 >>>> [34] rotate_polyline_with_origin <<<<
 >>>> [35] rotate_rect <<<<
-rotate(10)
-rotate(-10)
-pixel (6 252): expected 0 0 255 got 255 255 255
 >>>> [36] rotate_rect_with_origin <<<<
-rotate(90)
-rotate(30)
-rotate(60)
-Assertion failed: (x >= 0 && x < width_), function at, file PNGImage.cpp, line 62.
 >>>> [37] scale_circle <<<<
 >>>> [38] scale_circle_with_origin <<<<
 >>>> [39] scale_ellipse <<<<
@@ -54,9 +47,7 @@ Assertion failed: (x >= 0 && x < width_), function at, file PNGImage.cpp, line 6
 >>>> [45] scale_polyline <<<<
 >>>> [46] scale_polyline_with_origin <<<<
 >>>> [47] scale_rect <<<<
-pixel (0 20): expected 255 0 0 got 255 255 255
 >>>> [48] scale_rect_with_origin <<<<
-pixel (55 70): expected 0 255 0 got 255 255 255
 >>>> [49] transform_several <<<<
 >>>> [50] translate_circle <<<<
 >>>> [51] translate_ellipse <<<<
@@ -75,4 +66,4 @@ pixel (0 500): expected 255 0 0 got 255 255 255
 >>>> [60] use_5 <<<<
 pixel (1 1): expected 255 255 255 got 0 255 0
 >>>> [61] use_6 <<<<
-pixel (0 20): expected 0 0 0 got 255 255 255
+Assertion failed: (x >= 0 && x < width_), function at, file PNGImage.cpp, line 62.

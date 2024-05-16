@@ -244,13 +244,19 @@ namespace svg {
 
                 int degree = 0;
                 int scale = 1;
-                Point origin = {0, 0};
-                /*Point upper_left = {x, y};
-                Point upper_right = {x + width, y};
-                Point lower_left = {x, height - y};
-                Point lower_right = {width - x, height - y};*/
+                Point origin = {x + width / 2, y + height / 2};
+                Point rect_origin = {x, y};
+                int origin_x = origin.x;
+                int origin_y = origin.y;
 
                 const char* transform_str = group_child->Attribute("transform");
+                const char* transform_origin_str = group_child->Attribute("transform-origin");
+
+                if(transform_origin_str) {
+                    sscanf(transform_origin_str, "%d %d", &origin_x, &origin_y);
+                    origin = {origin_x, origin_y};
+                }
+
                 if(transform_str) {
                     if(strstr(transform_str, "translate")) {
                         if(strstr(transform_str, ",")) {
@@ -267,15 +273,20 @@ namespace svg {
                     }
                 }
 
-                Point rect_origin = {x, y};
-                rect_origin = rect_origin.translate({group_translate_x, group_translate_y});
-                rect_origin = rect_origin.rotate(origin, degree);
-                rect_origin = rect_origin.scale(origin, scale);
+                vector<Point> points = {rect_origin, rect_origin.translate({width - 1, 0}), 
+                    rect_origin.translate({width - 1, height - 1}), rect_origin.translate({0, height - 1})};
 
-                x = rect_origin.x;
-                y = rect_origin.y;
-
-                svg_elements.push_back(new Rectangle(fill, Point({x, y}), Point({x + width - 1, y + height - 1})));
+                for(Point &point : points) {
+                    if(degree != 0) {
+                        point = point.rotate({origin_x, origin_y}, degree);
+                    }
+                    else if(scale > 1) {
+                        point = point.scale({origin_x, origin_y}, scale);
+                    }
+                    point.x += group_translate_x;
+                    point.y += group_translate_y;
+                }
+                svg_elements.push_back(new Polygon(fill, points));
             }
             else if(strcmp(group_element_name, "g") == 0){
                 processGroupElement(group_child->FirstChildElement(), svg_elements, group_translate_x, group_translate_y);
@@ -608,7 +619,7 @@ namespace svg {
 
                 int degree = 0;
                 int scale = 1;
-                Point origin = {0, 0};
+                Point origin = {x + width / 2, y + height / 2};
                 Point rect_origin = {x, y};
 
                 const char* transform_str = child->Attribute("transform");
@@ -623,16 +634,11 @@ namespace svg {
                     if(strstr(transform_str, "translate")) {
                         if(strstr(transform_str, ",")) {
                             sscanf(transform_str, "translate(%d,%d)", &translate_x, &translate_y);
-                            rect_origin.x += translate_x;
-                            rect_origin.y += translate_y;
                         } else {
                             sscanf(transform_str, "translate(%d %d)", &translate_x, &translate_y);
-                            rect_origin.x += translate_x;
-                            rect_origin.y += translate_y;
                         }
                     } 
                     if(strstr(transform_str, "rotate")) {
-                        cout << transform_str << endl;
                         sscanf(transform_str, "rotate(%d)", &degree);
                     }
                     if(strstr(transform_str, "scale")) {
@@ -640,13 +646,20 @@ namespace svg {
                     }
                 }
 
-                if(degree != 0) {
-                    rect_origin = rect_origin.rotate(origin, degree);
+                vector<Point> points = {rect_origin, rect_origin.translate({width - 1, 0}), 
+                    rect_origin.translate({width - 1, height - 1}), rect_origin.translate({0, height - 1})};
+
+                for(Point &point : points) {
+                    if(degree != 0) {
+                        point = point.rotate({origin_x, origin_y}, degree);
+                    }
+                    else if(scale > 1) {
+                        point = point.scale({origin_x, origin_y}, scale);
+                    }
+                    point.x += translate_x;
+                    point.y += translate_y;
                 }
-                if(scale > 1) {
-                    rect_origin = rect_origin.scale(origin, scale);
-                }
-                svg_elements.push_back(new Rectangle(fill, Point({rect_origin.x, rect_origin.y}), Point({rect_origin.x + width - 1, rect_origin.y + height - 1})));
+                svg_elements.push_back(new Polygon(fill, points));
             }
             else if(strcmp(element_name, "g") == 0) {
                 processGroupElement(child->FirstChildElement(), svg_elements, translate_x, translate_y);

@@ -85,16 +85,10 @@ namespace svg
         vector<Point> points;
     };
 
-    class Rectangle : public SVGElement 
+    class Rectangle : public Polygon 
     {
     public:
-        Rectangle(const Color &fill, const Point &start, const Point &end);
-        void draw(PNGImage &img) const override;
-
-    private:
-        Color fill;
-        Point start;
-        Point end;
+        Rectangle(const Color &fill, const Point &origin, int width, int height);
     };
 }
 #endif
