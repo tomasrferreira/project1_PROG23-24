@@ -73,11 +73,3 @@ Ellipse, Circle, Polyline, Line, Polygon, Rectangle: Derived classes representin
 
 -> This project enables users to convert SVG graphics into PNG format, supporting a wide range of SVG features including various shapes, colors, and transformations. The implementation ensures that SVG files are accurately rendered as PNG images, preserving their visual properties and structure.
 
-
-
-
-
-
-
-
-
