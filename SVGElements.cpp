@@ -29,7 +29,7 @@ namespace svg
         img.draw_ellipse(center, {radius, radius}, fill);
     }
 
-    Polyline::Polyline(const Color &stroke_color, const std::vector<Point>& polyline_points)
+    Polyline::Polyline(const Color &stroke_color, const vector<Point>& polyline_points)
         : stroke(stroke_color), points(polyline_points)
     {
     }
